@@ -1,8 +1,15 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { NextPage } from 'next';
+import dynamic from "next/dynamic";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+const App = dynamic(
+  () => {
+    return import("./App");
+  },
+  { ssr: false }
+);
+
+const Home: NextPage = () => {
+  return <App />;
 }
 
-export default MyApp
+export default Home
