@@ -40,6 +40,7 @@ export default NextAuth({
               },
         }),
     ],
+    secret: process.env.NEXTAUTH_SECRET,
     // adding user info to the user session object
     callbacks: {
         async jwt({ token, user }) {
