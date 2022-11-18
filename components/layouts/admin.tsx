@@ -25,7 +25,6 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import Link from "next/link";
-import { getSession } from 'next-auth/react';
 import Select from '../../components/form/select'
 
 const list = [
@@ -81,11 +80,14 @@ function classNames(...classes) {
 
 export default function AdminPageLayout({ children }) {
   const router = useRouter()
-  console.log(router)
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { data: session, status } = useSession();
   const { disconnect } = useDisconnect();
+
+  if (status === 'unauthenticated') {
+    router.push('/signin')
+  }
 
   const handle_logout = () => {
     disconnect();
@@ -465,22 +467,22 @@ export default function AdminPageLayout({ children }) {
   )
 }
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
+// export async function getServerSideProps(context) {
+//   const session = await getSession(context);
 
-  console.log(session, 'session')
+//   console.log(session, 'session')
 
-  // redirect if not authenticated
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/signin',
-        permanent: false,
-      },
-    };
-  }
+//   // redirect if not authenticated
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: '/signin',
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  return {
-    props: { user: session.user },
-  };
-}
+//   return {
+//     props: { user: session.user },
+//   };
+// }
