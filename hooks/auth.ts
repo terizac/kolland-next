@@ -23,14 +23,14 @@ export const useHandleWeb3Auth = (callbackUrl: string = '/') => {
     const { account, chain } = await connectAsync({
       connector
     })
-
-    const userData = { address: account, chain: chain.id, network: 'evm' }
     
     // 這段拿到使用者的資料 web3AuthInstance 可以使用 Web3AuthCore 的方法
     if (connector.name === 'web3Auth') {
       const getUserInfo = await connectors[0].web3AuthInstance.getUserInfo()
       console.log(getUserInfo, 'getUserInfo')
     }
+    const userData = { address: account, chain: connector.name === 'web3Auth' ? '0x5' : chain.id, network: 'evm' }
+    
     const { data } = await axios.post('/api/auth/request-message', userData, {
       headers: {
         'Content-Type': 'application/json',
