@@ -24,10 +24,10 @@ export default function CTA() {
         <div className="lg:grid lg:grid-cols-12">
           <div className="relative z-10 lg:col-span-4 lg:col-start-1 lg:row-start-1 lg:bg-transparent lg:py-16">
             <div
-              className="absolute inset-x-0 h-1/2 bg-gray-50 lg:hidden"
+              className="absolute inset-x-0 h-1/2 bg-gray-50 hidden"
               aria-hidden="true"
             />
-            <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:max-w-none lg:p-0">
+            <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:max-w-none lg:p-0 pt-8">
               <div className="aspect-w-10 aspect-h-6 sm:aspect-w-2 sm:aspect-h-1 lg:aspect-w-1">
                 <img
                   className="rounded-3xl object-cover object-center shadow-2xl"
@@ -132,7 +132,7 @@ export default function CTA() {
                 Contact Us
               </a>
               <Link href="/demo">
-                <button className="inline-flex items-center justify-center rounded-md border border-transparent bg-black px-5 py-3 text-base font-medium text-white hover:bg-gray-900 ml-3">
+                <button className="inline-flex items-center justify-center rounded-md border border-transparent bg-black px-5 py-3 text-base font-medium text-white hover:bg-gray-900 sm:ml-3 w-full ml-0 sm:w-auto">
                   Try it (Demo)
                 </button>
               </Link>

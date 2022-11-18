@@ -170,14 +170,14 @@ export default function Main() {
                           <a
                             href="https://www.surveycake.com/s/GeW34"
                             target="_blank"
-                            className="block w-full rounded-md bg-indigo-500 py-3 px-8 font-medium text-white shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-gray-900"
+                            className="block w-full rounded-md bg-indigo-500 py-3 px-8 font-medium text-white shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-gray-900 text-center"
                           >
                             Contact Us
                           </a>
                         </div>
                         <div className="mt-3 sm:mt-0 sm:ml-3">
                           <Link href="/demo">
-                            <button className="block w-full rounded-md bg-teal-500 py-3 px-14 font-medium text-white shadow hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2 focus:ring-offset-gray-900">
+                            <button className="block w-full rounded-md bg-teal-500 py-3 px-14 font-medium text-white shadow hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2 focus:ring-offset-gray-900 text-center">
                               Try it (Demo)
                             </button>
                           </Link>
