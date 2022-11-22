@@ -107,7 +107,7 @@ export default function AdminPageLayout({ children }) {
         <body class="h-full">
         ```
       */}
-        <div className="min-h-full h-[100vh] bg-[#24292E]">
+        <div className="min-h-full h-[100vh] bg-[#24292E] overflow-x-hidden">
           <Transition.Root show={sidebarOpen} as={Fragment}>
             <Dialog
               as="div"
@@ -175,7 +175,7 @@ export default function AdminPageLayout({ children }) {
                     >
                       <div className="space-y-1 px-2">
                         {navigation.map((item) => (
-                          <Link href="item.href">
+                          <Link href={item.href}>
                             <a
                               key={item.name}
                               href={item.href}
