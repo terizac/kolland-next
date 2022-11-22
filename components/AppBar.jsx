@@ -124,12 +124,14 @@ export default function AppBar() {
                 ))}
               </div>
               <div className="mt-6 px-5">
-                <a
-                  href="#"
-                  className="block w-full rounded-md bg-indigo-600 py-3 px-4 text-center font-medium text-white shadow hover:bg-indigo-700"
-                >
-                  Dashboard
-                </a>
+                <Link href="/dashboard">
+                  <a
+                    href="#"
+                    className="block w-full rounded-md bg-indigo-600 py-3 px-4 text-center font-medium text-white shadow hover:bg-indigo-700"
+                  >
+                    Dashboard
+                  </a>
+                </Link>
               </div>
               <div className="mt-6 px-5">
                 <p className="text-center text-base font-medium text-gray-500">
