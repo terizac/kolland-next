@@ -21,6 +21,7 @@ const service = axios.create({
 // Request interceptors
 service.interceptors.request.use(
   (config) => {
+    console.log(base_uri, 'base_uri')
     return config;
   },
   (error) => {
