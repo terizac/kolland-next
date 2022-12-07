@@ -17,7 +17,7 @@ export const post = (url, data, params, window) => {
   data = {
     ...data,
   };
-  data = qs.stringify(data);
+  // data = qs.stringify(data);
   return request({
     url: url,
     method: "post",
@@ -44,3 +44,7 @@ export const formDataRequest = (url, formData, params, window) => {
     // responseType: "application/json",
   });
 };
+
+export const setToken = (token) => {
+  request.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}

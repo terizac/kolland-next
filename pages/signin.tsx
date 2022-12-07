@@ -1,13 +1,8 @@
-// import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-// import { Web3AuthConnector } from '@web3auth/web3auth-wagmi-connector'
-import { signIn } from 'next-auth/react';
-import { useAccount, useConnect, useSignMessage, useDisconnect } from 'wagmi';
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import { useEffect } from 'react';
 import { useHandleWeb3Auth } from '../hooks/auth'
+import { useRouter } from 'next/router'
 
 function SignIn() {
+  const router = useRouter()
   const connectWallet = useHandleWeb3Auth()
   
   return (
@@ -24,7 +19,7 @@ function SignIn() {
         <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
-              <div className="flex items-center">
+              <div className="flex items-center cursor-pointer" onClick={() => router.push('/')}>
                 <img
                   className="h-12 w-auto rounded-md"
                   src="/images/logo.png"
@@ -43,19 +38,19 @@ function SignIn() {
                     onClick={async () => await connectWallet(2)}
                     className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-md font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mb-3"
                   >
-                    Connect with WalletConnect
+                    Connect With WalletConnect
                   </button>
                   <button
                     onClick={async () => await connectWallet(1)}
                     className="w-full justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-md font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mb-3 hidden sm:flex"
                   >
-                    Connect with Metamask
+                    Connect With Metamask
                   </button>
                   <button
                     onClick={async () => await connectWallet(3)}
                     className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-md font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
-                    Connect with Coinbase Wallet
+                    Connect With Coinbase Wallet
                   </button>
                   
                   <div className="relative mt-6">
@@ -63,14 +58,20 @@ function SignIn() {
                       <div className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-sm mb-6">
-                      <span className="bg-white px-2 text-gray-500">Create a wallet with an email</span>
+                      <span className="bg-white px-2 text-gray-500">Create a wallet With an email</span>
                     </div>
                   </div>
                   <button
                     onClick={async () => await connectWallet(0)}
                     className="flex w-full justify-center rounded-md bg-transparent py-3 px-4 text-md text-black shadow-sm hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 border-2 border-black font-bold duration-100"
                   >
-                    Connect with Your Email
+                    Connect With Your Email
+                  </button>
+                  <button
+                    onClick={() => router.push('/')}
+                    className="flex w-full justify-center rounded-md bg-black py-3 px-4 text-md text-white shadow-sm hover:bg-transparent hover:text-black focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 border-2 border-black font-bold duration-100 mt-4"
+                  >
+                    Check Out Home Page First
                   </button>
                 </div>
               </div>

@@ -8,6 +8,7 @@ import ConnectorButton from "../components/ConnectorButton.jsx";
 
 import { useSession } from "next-auth/react";
 import { getSession, signOut } from "next-auth/react";
+import { useRouter } from 'next/router'
 
 const navigation = [
   { name: "Tokens", href: "#tokens" },
@@ -18,12 +19,13 @@ const navigation = [
 ];
 
 export default function AppBar() {
+  const router = useRouter()
   const { data: session, status } = useSession();
   const { disconnect } = useDisconnect();
 
   const handle_logout = () => {
     disconnect();
-    signOut({ callbackUrl: "/signin" });
+    signOut({ callbackUrl: "/" });
   };
 
   return (
@@ -71,9 +73,13 @@ export default function AppBar() {
             <div className="text-base font-medium text-[#999] hover:text-gray-300">
               {session?.user?.address}
             </div>
-            <a href="#" className="text-white" onClick={handle_logout}>
+            {
+              session?.user?.address ? <a href="#" className="text-white" onClick={handle_logout}>
               Logout
+            </a> : <a href="#" className="text-white" onClick={() => router.push('/signin')}>
+            Login
             </a>
+            }
             <Link href="/dashboard">
               <a
                 href="#"
@@ -136,13 +142,13 @@ export default function AppBar() {
               <div className="mt-6 px-5">
                 <p className="text-center text-base font-medium text-gray-500">
                   {/* Existing customer?{" "} */}
-                  <a
-                    href="#"
-                    className="text-gray-900 hover:underline"
-                    onClick={handle_logout}
-                  >
+                  {
+                    session?.user?.address ? <a href="#" className="text-gray-900 hover:underline" onClick={handle_logout}>
                     Logout
+                  </a> : <a href="#" className="text-gray-900 hover:underline" onClick={() => router.push('/signin')}>
+                    Login
                   </a>
+                  }
                 </p>
               </div>
             </div>

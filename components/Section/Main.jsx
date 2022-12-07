@@ -1,133 +1,38 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { useRouter } from 'next/router'
+import { get, post } from '../../request/methods'
 
-// export default function Main() {
-//   // const [{ data: connectData }, connect] = useConnect({ fetchEns: true });
-
-//   return (
-//     <div
-//       className="
-//       mt-0 mb-0 z-3 relative
-//       items-center flex flex-wrap content-center
-//       xl:w-[973px]
-//       xl:mx-[130px]
-//       xl:p-0
-//       xl:min-h-screen
-//       sm-min-h-[480px]
-//       min-h-screen
-//       pt-[40px]
-//       w-[100%]
-//       px-[5%]"
-//     >
-//       <div
-//         className="
-//         rainbow-text-1
-//         text-galaxy
-//         text-[700] w-[100%] mt-0 mr-a  ml-0
-//         xl:text-left
-//         xl:truncate
-//         xl:text-[48px]
-//         xl:mb-[32px]
-//         hidden
-//         xl:block
-//        "
-//       >
-//         Empower your impact! A token <br />
-//         back-focused system in Web3
-//       </div>
-//       <div
-//         className="
-//             rainbow-text-1
-//             text-galaxy
-//             text-[700] w-[100%] mt-0 mr-a  ml-0
-//             xl:hidden
-//             sm-text-[32px]
-//             text-[20px]
-//             text-left
-//             mb-[32px]
-//           "
-//       >
-//         Empower your impact!
-//         <br />A token back-focused system in Web3
-//       </div>
-//       <div
-//         className="
-//         text-left
-//         text-[300]
-//         w-100%
-//         text-[#fff]
-//         mb-[56px]
-//         xl:text-[32px]
-//         text-[18px]
-//         "
-//       >
-//         By using Kolland, Web3 Affiliate marketing is simple. Easily onboard
-//         unlimited affiliates and manage their performance with built-in
-//         reporting for Web3 projects across your brand ambassador, influencer and
-//         affiliate programs.
-//       </div>
-//       <div
-//         className="
-//         flex
-//         xl:justify-start
-//         items-center
-//         flex-wrap
-//         justify-center
-//         "
-//       >
-//         {/* <a
-//           href="https://chrome.google.com/webstore/detail/kolland-web3-tool/khmaggbkaegnfbhcjoameccbandhioml"
-//           target="_blank"
-//           className="
-//           btn primary
-//           radius-btn
-//           text-700
-//           flex
-//           justify-center
-//           items-center
-//           color-white
-//           sm-mb-0
-//           sm-mr-20px
-//           xl:text-24px
-//           xl:w-280px
-//           xl:h-60px
-//           text-18px
-//           w-200px
-//           h-45px
-//           mb-20px
-//           "
-//         >
-//           Download (Beta)
-//         </a> */}
-//         <Link
-//           href="/demo"
-//         >
-//           <a className="
-//           btn
-//           b-2
-//           btn primary
-//           radius-btn
-//           text-[700]
-//           flex
-//           justify-center
-//           items-center
-//           text-white
-//           sm-ml-20px
-//           xl:text-[24px]
-//           xl:w-[280px]
-//           xl:h-[60px]
-//           text-[18px]
-//           w-[200px]
-//           h-[45px] ">
-//             Build (Demo)
-//           </a>
-//         </Link>
-//       </div>
-//     </div>
-//   );
-// }
 
 export default function Main() {
+  const router = useRouter()
+  const { data: session, status } = useSession();
+  const [isEmailInput, setEmailInput] = useState(false);
+  const [email, setEmail] = useState('');
+  const handleSubscribe = async () => {
+    const res = await post(`/dev/users/update/${session?.user?.address}`, {
+      email: email
+    });
+    console.log(res)
+  }
+  useEffect(() => {
+    const fetchUserInfo = async (address) => {
+      try {
+        const res = await get(`/dev/users/${address}`);
+        setEmailInput(res.data?.user.owned_wallet_type === "self");
+      } catch (e) {
+        if (e.response.status === 401) {
+          signOut({ callbackUrl: "/" });
+        }
+      }
+    };
+    if (session?.user?.address) {
+      console.log(session.user)
+      fetchUserInfo(session?.user?.address);
+    }
+  }, [session]);
   return (
     <div className="relative overflow-hidden">
       <main>
@@ -183,6 +88,32 @@ export default function Main() {
                           </Link>
                         </div>
                       </div>
+                      {
+                        isEmailInput && (<form className="mt-5 sm:flex sm:items-center">
+                        <div className="w-full sm:max-w-xs">
+                          <label htmlFor="email" className="sr-only">
+                            Email
+                          </label>
+                          <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            value={email}
+                            onChange={event => setEmail(event.target.value)}
+                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md py-3 px-2"
+                            placeholder="you@example.com"
+                          />
+                        </div>
+                        <div className="mt-3 sm:mt-0">
+                          <div
+                            onClick={handleSubscribe}
+                            className="block w-full rounded-md bg-red-500 py-3 px-8 font-medium text-white shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2 focus:ring-offset-gray-900 text-center xl:ml-5"
+                          >
+                            Subscribe
+                          </div>
+                        </div>
+                      </form>)
+                      }
                     </div>
                   </div>
                 </div>

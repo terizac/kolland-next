@@ -6,6 +6,7 @@ import { SessionProvider } from 'next-auth/react';
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import constants from '../constants'
 
 
 
@@ -25,12 +26,13 @@ const client = createClient({
   autoConnect: true,
   connectors: [
     new Web3AuthConnector({
-      chains: ['goerli'],
+      // chains: ['goerli'],
+      chains,
       options: {
         enableLogging: true,
-        clientId: 'BGr8gtjO01Be55tkljpYQFezrNPmsX2HWkbQb7AVIMuwAJopinjr-opENMExFz1ycYBqsPD2mzO7D030dezssM0', // Get your own client id from https://dashboard.web3auth.io
-        network: 'testnet', // web3auth network
-        chainId: '0x5', // chainId that you want to connect with
+        clientId: constants.WEB3_AUTH_CLIENT_ID, // Get your own client id from https://dashboard.web3auth.io
+        network: constants.WEB3_AUTH_NETWORK, // web3auth network
+        chainId: constants.CHAIN_ID, // chainId that you want to connect with
       },
     }),
     new InjectedConnector({ chains }),
@@ -41,7 +43,7 @@ const client = createClient({
     }),
     new CoinbaseWalletConnector({
       options: {
-        appName: 'localhost:3000',
+        appName: constants.APP_NAME,
       },
     }),
   ]

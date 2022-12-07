@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { get } from '../../request/methods'
 /*
   This example requires some changes to your config:
   
@@ -14,6 +17,17 @@ import Link from "next/link";
   ```
 */
 export default function CTA() {
+  const { data: session, status } = useSession();
+  const [isEmailInput, setEmailInput] = useState(false);
+  useEffect(() => {
+    const fetchUserInfo = async (address) => {
+      const res = await get(`/dev/users/${address}`);
+      setEmailInput(res.data?.user.owned_wallet_type === "self");
+    };
+    if (session?.user?.address) {
+      fetchUserInfo(session?.user?.address);
+    }
+  }, [session]);
   return (
     <div className="relative bg-white py-16">
       <div
@@ -136,6 +150,31 @@ export default function CTA() {
                   Try it (Demo)
                 </button>
               </Link>
+              {isEmailInput && (
+                <form className="mt-5 sm:flex sm:items-center">
+                  <div className="w-full sm:max-w-xs">
+                    <label htmlFor="email" className="sr-only">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md py-3 px-2"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                  <div className="mt-3 sm:mt-0">
+                    <a
+                      href="https://www.surveycake.com/s/GeW34"
+                      target="_blank"
+                      className="block w-full rounded-md bg-red-500 py-3 px-8 font-medium text-white shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2 focus:ring-offset-gray-900 text-center xl:ml-5"
+                    >
+                      Subscribe
+                    </a>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@
  */
 import axios from "axios";
 
-const base_uri = process.env.NODE_ENV != 'development' ? 'http://localhost:3008/v1' : 'https://api.kolland.xyz/v1'
+const base_uri = process.env.NODE_ENV == 'development' ? 'http://localhost:5000' : 'https://api.kolland.xyz'
 const service = axios.create({
   baseURL: base_uri, // url = base url + request url
   timeout: 10000,
@@ -71,6 +71,7 @@ service.interceptors.response.use(
   },
   (error) => {
     if (error && error.response) {
+      console.log(error, 'error')
       switch (error.response.status) {
         case 400:
           error.message = "请求错误(400)";
