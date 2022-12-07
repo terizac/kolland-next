@@ -3,7 +3,7 @@
  */
 import axios from "axios";
 
-const base_uri = process.env.NODE_ENV == 'development' ? 'http://localhost:5000' : 'https://api.kolland.xyz'
+const base_uri = process.env.API_URL
 const service = axios.create({
   baseURL: base_uri, // url = base url + request url
   timeout: 10000,
