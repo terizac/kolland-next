@@ -1,56 +1,62 @@
-import CredentialsProvider from 'next-auth/providers/credentials';
-import NextAuth from 'next-auth';
-import Moralis from 'moralis';
+import CredentialsProvider from 'next-auth/providers/credentials'
+import NextAuth from 'next-auth'
+import Moralis from 'moralis'
+import axios from 'axios'
+import { post } from '../../../request/methods'
 
 export default NextAuth({
-    providers: [
-        CredentialsProvider({
-            name: 'MoralisAuth',
-            credentials: {
-                message: {
-                    label: 'Message',
-                    type: 'text',
-                    placeholder: '0x0',
-                },
-                signature: {
-                    label: 'Signature',
-                    type: 'text',
-                    placeholder: '0x0',
-                },
-            },
-              async authorize(credentials) {
-                try {
-                  // "message" and "signature" are needed for authorization
-                  // we described them in "credentials" above
-                  const { message, signature } = credentials;
-
-                  await Moralis.start({ apiKey: process.env.MORALIS_API_KEY });
-
-                  const { address, profileId } = (
-                    await Moralis.Auth.verify({ message, signature, network: 'evm' })
-                  ).raw;
-
-                  const user = { address, profileId, signature };
-                  // returning the user object and creating  a session
-                  return user;
-                } catch (e) {
-                  console.error(e);
-                  return null;
-                }
-              },
-        }),
-    ],
-    secret: process.env.NEXTAUTH_SECRET,
-    // adding user info to the user session object
-    callbacks: {
-        async jwt({ token, user }) {
-            user && (token.user = user);
-            return token;
+  providers: [
+    CredentialsProvider({
+      name: 'MoralisAuth',
+      credentials: {
+        message: {
+          label: 'Message',
+          type: 'text',
+          placeholder: '0x0',
         },
-        async session({ session, token }) {
-          session.user = token.user;
-          console.log(token)
-            return session;
+        signature: {
+          label: 'Signature',
+          type: 'text',
+          placeholder: '0x0',
         },
+      },
+      // await signIn('credentials', { message, signature, redirect, callbackUrl}
+      async authorize(credentials) {
+        try {
+          // "message" and "signature" are needed for authorization
+          // we described them in "credentials" above
+          const { message, signature, email, name, avatar, idToken } = credentials
+          let res
+          res = await post(`/dev/users/web3login`, {
+            message,
+            signature,
+            email, name, avatar, idToken
+          })
+
+
+          let user
+          if (res.data) {
+            user = res.data
+          }
+          // returning the user object and creating  a session
+          return user
+        } catch (e) {
+          console.error(e.response)
+          return null
+        }
+      },
+    }),
+  ],
+  secret: process.env.NEXTAUTH_SECRET,
+  // adding user info to the user session object
+  callbacks: {
+    async jwt({ token, user }) {
+      user && (token.user = user)
+      return token
     },
-});
+    async session({ session, token }) {
+      session.user = token.user
+      return session
+    },
+  },
+})

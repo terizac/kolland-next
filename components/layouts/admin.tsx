@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { useSession, signOut } from "next-auth/react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
+import NeedAuth from '../NeedAuth'
 import {
   Bars3CenterLeftIcon,
   BellIcon,
@@ -26,6 +27,7 @@ import {
 } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import Select from '../../components/form/select'
+import request from "../../request";
 
 const list = [
   {
@@ -85,13 +87,11 @@ export default function AdminPageLayout({ children }) {
   const { data: session, status } = useSession();
   const { disconnect } = useDisconnect();
 
-  if (status === 'unauthenticated') {
-    router.push('/signin')
-  }
+  
 
   const handle_logout = () => {
     disconnect();
-    signOut({ callbackUrl: "/signin" });
+    signOut({ callbackUrl: "/" });
   };
   return (
     <>
@@ -107,6 +107,7 @@ export default function AdminPageLayout({ children }) {
         <body class="h-full">
         ```
       */}
+        <NeedAuth></NeedAuth>
         <div className="min-h-full h-[100vh] bg-[#24292E] overflow-x-hidden">
           <Transition.Root show={sidebarOpen} as={Fragment}>
             <Dialog
@@ -466,23 +467,3 @@ export default function AdminPageLayout({ children }) {
     </>
   )
 }
-
-// export async function getServerSideProps(context) {
-//   const session = await getSession(context);
-
-//   console.log(session, 'session')
-
-//   // redirect if not authenticated
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: '/signin',
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return {
-//     props: { user: session.user },
-//   };
-// }

@@ -4,7 +4,7 @@ const config = {
     domain: process.env.APP_DOMAIN,
     statement: 'Please sign this message to confirm your identity.',
     uri: process.env.NEXTAUTH_URL,
-    timeout: 60,
+    timeout: 120,
 };
 
 export default async function handler(req, res) {

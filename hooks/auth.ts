@@ -1,5 +1,3 @@
-// import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-// import { Web3AuthConnector } from '@web3auth/web3auth-wagmi-connector'
 import { signIn } from 'next-auth/react';
 import { useAccount, useConnect, useSignMessage, useDisconnect } from 'wagmi';
 import { useRouter } from 'next/router';
@@ -24,14 +22,9 @@ export const useHandleWeb3Auth = (callbackUrl: string = '/') => {
       connector
     })
     
-    // 這段拿到使用者的資料 web3AuthInstance 可以使用 Web3AuthCore 的方法
-    if (connector.name === 'web3Auth') {
-      const getUserInfo = await connectors[0].web3AuthInstance.getUserInfo()
-      console.log(getUserInfo, 'getUserInfo')
-    }
     const userData = { address: account, chain: connector.name === 'web3Auth' ? '0x5' : chain.id, network: 'evm' }
     
-    const { data } = await axios.post('/api/auth/request-message', userData, {
+    const { data } = await axios.post('/api/auth/get-signin-message', userData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -41,17 +34,40 @@ export const useHandleWeb3Auth = (callbackUrl: string = '/') => {
 
     const signature = await signMessageAsync({ message })
 
-    // redirect user after success authentication to '/user' page
-    const { url } = await signIn('credentials', {
-      message,
-      signature,
-      redirect: false,
-      callbackUrl,
-    })
+    // 這段拿到使用者的資料 web3AuthInstance 可以使用 Web3AuthCore 的方法
+    let web3AuthData = {}
+    let res
+    if (connector.name === 'web3Auth') {
+      const user = await connectors[0].web3AuthInstance.getUserInfo()
+      web3AuthData = {
+        email: user.email,
+        name: user.name,
+        avatar: user.profileImage,
+        idToken: user.idToken
+      }
+      res = await signIn('credentials', {
+        message,
+        signature,
+        ...web3AuthData,
+        redirect: false,
+        callbackUrl,
+      })
+      // https://web3auth.io/docs/sdk/node/usage
+    } else {
+      res = await signIn('credentials', {
+        message,
+        signature,
+        redirect: false,
+        callbackUrl,
+      })
+    }
+    
     /**
      * instead of using signIn(..., redirect: "/user")
      * we get the url from callback and push it to the router to avoid page refreshing
      */
-    push(url)
+    if (res.url) {
+      push(res.url)
+    }
   }
 }
