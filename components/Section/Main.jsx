@@ -12,14 +12,14 @@ export default function Main() {
   const [isEmailInput, setEmailInput] = useState(false);
   const [email, setEmail] = useState('');
   const handleSubscribe = async () => {
-    const res = await post(`/dev/users/update/${session?.user?.address}`, {
+    const res = await post(`/users/update/${session?.user?.address}`, {
       email: email
     });
   }
   useEffect(() => {
     const fetchUserInfo = async (address) => {
       try {
-        const res = await get(`/dev/users/${address}`);
+        const res = await get(`/users/${address}`);
         setEmailInput(res.data?.user.owned_wallet_type === "self");
       } catch (e) {
         if (e.response.status === 401) {

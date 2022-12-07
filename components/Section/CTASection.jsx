@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { get } from '../../request/methods'
 /*
@@ -21,8 +21,14 @@ export default function CTA() {
   const [isEmailInput, setEmailInput] = useState(false);
   useEffect(() => {
     const fetchUserInfo = async (address) => {
-      const res = await get(`/dev/users/${address}`);
-      setEmailInput(res.data?.user.owned_wallet_type === "self");
+      try {
+        const res = await get(`/users/${address}`);
+        setEmailInput(res.data?.user.owned_wallet_type === "self");
+      } catch (e) {
+        if (e.response.status === 401) {
+          signOut({ callbackUrl: "/" });
+        }
+      }
     };
     if (session?.user?.address) {
       fetchUserInfo(session?.user?.address);
