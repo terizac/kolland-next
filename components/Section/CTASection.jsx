@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { get } from '../../request/methods'
 import { get, post } from '../../request/methods'
 /*
   This example requires some changes to your config:
