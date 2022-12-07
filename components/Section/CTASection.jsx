@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { get } from '../../request/methods'
+import { get, post } from '../../request/methods'
 /*
   This example requires some changes to your config:
   
@@ -19,6 +19,12 @@ import { get } from '../../request/methods'
 export default function CTA() {
   const { data: session, status } = useSession();
   const [isEmailInput, setEmailInput] = useState(false);
+  const [email, setEmail] = useState('');
+  const handleSubscribe = async () => {
+    const res = await post(`/users/update/${session?.user?.address}`, {
+      email: email
+    });
+  }
   useEffect(() => {
     const fetchUserInfo = async (address) => {
       try {
@@ -171,13 +177,13 @@ export default function CTA() {
                     />
                   </div>
                   <div className="mt-3 sm:mt-0">
-                    <a
-                      href="https://www.surveycake.com/s/GeW34"
+                    <div
+                      onClick={handleSubscribe}
                       target="_blank"
-                      className="block w-full rounded-md bg-red-500 py-3 px-8 font-medium text-white shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2 focus:ring-offset-gray-900 text-center xl:ml-5"
+                      className="block w-full rounded-md bg-red-500 py-3 px-8 font-medium text-white shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2 focus:ring-offset-gray-900 text-center xl:ml-5 cursor-pointer"
                     >
                       Subscribe
-                    </a>
+                    </div>
                   </div>
                 </form>
               )}

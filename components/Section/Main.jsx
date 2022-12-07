@@ -108,7 +108,7 @@ export default function Main() {
                         <div className="mt-3 sm:mt-0">
                           <div
                             onClick={handleSubscribe}
-                            className="block w-full rounded-md bg-red-500 py-3 px-8 font-medium text-white shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2 focus:ring-offset-gray-900 text-center xl:ml-5"
+                            className="block w-full rounded-md bg-red-500 py-3 px-8 font-medium text-white shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2 focus:ring-offset-gray-900 text-center xl:ml-5 cursor-pointer"
                           >
                             Subscribe
                           </div>
