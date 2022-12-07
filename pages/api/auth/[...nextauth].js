@@ -27,7 +27,7 @@ export default NextAuth({
           // we described them in "credentials" above
           const { message, signature, email, name, avatar, idToken } = credentials
           let res
-          res = await post(`/dev/users/web3login`, {
+          res = await post(`/users/web3login`, {
             message,
             signature,
             email, name, avatar, idToken
