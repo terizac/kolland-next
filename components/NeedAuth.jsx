@@ -11,11 +11,11 @@ const NeedAuth = () => {
     return <div className="loading" />
   }
 
-  if (status === 'unauthenticated') {
+  if (status === 'unauthenticated' && router.pathname !== '/') {
     router.push('/signin')
     return
   }
-
+  
   if (status === 'authenticated') {
     setToken(session.user.access_token)
   }

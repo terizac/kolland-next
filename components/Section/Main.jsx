@@ -1,4 +1,5 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ export default function Main() {
   const { data: session, status } = useSession();
   const [isEmailInput, setEmailInput] = useState(false);
   const [email, setEmail] = useState('');
+  const { disconnect } = useDisconnect();
   const handleSubscribe = async () => {
     const res = await post(`/users/update/${session?.user?.address}`, {
       email: email
@@ -23,6 +25,7 @@ export default function Main() {
         setEmailInput(res.data?.user.owned_wallet_type === "self");
       } catch (e) {
         if (e.response.status === 401) {
+          disconnect()
           signOut({ callbackUrl: "/" });
         }
       }
