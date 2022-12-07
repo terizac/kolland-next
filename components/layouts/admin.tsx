@@ -467,23 +467,3 @@ export default function AdminPageLayout({ children }) {
     </>
   )
 }
-
-// export async function getServerSideProps(context) {
-//   const session = await getSession(context);
-
-//   console.log(session, 'session')
-
-//   // redirect if not authenticated
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: '/signin',
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return {
-//     props: { user: session.user },
-//   };
-// }

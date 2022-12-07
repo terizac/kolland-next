@@ -15,7 +15,6 @@ export default function Main() {
     const res = await post(`/dev/users/update/${session?.user?.address}`, {
       email: email
     });
-    console.log(res)
   }
   useEffect(() => {
     const fetchUserInfo = async (address) => {
@@ -29,7 +28,6 @@ export default function Main() {
       }
     };
     if (session?.user?.address) {
-      console.log(session.user)
       fetchUserInfo(session?.user?.address);
     }
   }, [session]);

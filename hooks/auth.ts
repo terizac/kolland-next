@@ -61,13 +61,6 @@ export const useHandleWeb3Auth = (callbackUrl: string = '/') => {
         callbackUrl,
       })
     }
-
-    // redirect user after success authentication to '/user' page
-
-    console.log(res, 'res')
-
-
-    // TODO 儲存使用者資料到 DB
     
     /**
      * instead of using signIn(..., redirect: "/user")
