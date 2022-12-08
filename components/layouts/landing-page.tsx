@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useSession } from "next-auth/react";
+import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import AppBar from "../AppBar";
 import Footer from '../Footer'
 import request from "../../request";

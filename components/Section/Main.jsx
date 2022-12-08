@@ -7,16 +7,38 @@ import { useRouter } from 'next/router'
 import { get, post } from '../../request/methods'
 
 
-export default function Main() {
+export default function Main({showAlert}) {
   const router = useRouter()
   const { data: session, status } = useSession();
   const [isEmailInput, setEmailInput] = useState(false);
   const [email, setEmail] = useState('');
   const { disconnect } = useDisconnect();
   const handleSubscribe = async () => {
-    const res = await post(`/users/update/${session?.user?.address}`, {
-      email: email
-    });
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(!email.match(mailformat)) {
+      showAlert({
+        title: 'Email is not valid.',
+        desc: 'Please Confirm your email format and try again.',
+        type: 'fail'
+      })
+      setEmail('')
+      return
+    }
+    try {
+      const res = await post(`/users/update/${session?.user?.address}`, {
+        email: email
+      });
+      if (res.email) {
+        setEmail('')
+        showAlert({
+          title: 'Subscribe Success!',
+          desc: 'We will send you the news in the future.',
+          type: 'success'
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
   useEffect(() => {
     const fetchUserInfo = async (address) => {
